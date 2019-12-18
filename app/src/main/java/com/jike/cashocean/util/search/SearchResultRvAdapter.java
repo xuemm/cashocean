@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jike.cashocean.R;
+import com.jike.cashocean.model.SystemAppBean;
 
 import java.util.List;
 
@@ -19,10 +20,11 @@ import java.util.List;
 public class SearchResultRvAdapter extends RecyclerView.Adapter<SearchResultRvAdapter.ViewHolder> {
 
     Context mContext;
-    List<String> list;
+    List<SystemAppBean.DataBean.DatasBean.ListBean> list;
     PopupRvClickListener popupRvClickListener;
 
-    public SearchResultRvAdapter(Context context, List<String> data) {
+    public SearchResultRvAdapter(Context context,
+                                 List<SystemAppBean.DataBean.DatasBean.ListBean> data) {
         mContext = context;
         list = data;
     }
@@ -37,28 +39,21 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter<SearchResultRvAd
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        holder.content.setText(list.get(position));
+        holder.content.setText(list.get(position).getApp_name());
         holder.parentLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popupRvClickListener.onItemChildClick(holder.parentLl.getId(), position,
-                        list.get(position));
+                        list.get(position).getApp_name());
             }
         });
-        holder.iconLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupRvClickListener.onItemChildClick(holder.iconLeft.getId(), position,
-                        list.get(position));
-            }
-        });
-        holder.iconRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupRvClickListener.onItemChildClick(holder.iconRight.getId(), position,
-                        list.get(position));
-            }
-        });
+//        holder.iconRight.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                popupRvClickListener.onItemChildClick(holder.iconRight.getId(), position,
+//                        list.get(position).getApp_name());
+//            }
+//        });
     }
 
     @Override
@@ -69,14 +64,12 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter<SearchResultRvAd
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView content;
-        private ImageView iconLeft;
         private ImageView iconRight;
         private LinearLayout parentLl;
 
         public ViewHolder(View itemView) {
             super(itemView);
             content = itemView.findViewById(R.id.item_search_result_content);
-            iconLeft = itemView.findViewById(R.id.item_search_result_icon_left);
             iconRight = itemView.findViewById(R.id.item_search_result_icon_right);
             parentLl = itemView.findViewById(R.id.item_search_result_parent_ll);
         }

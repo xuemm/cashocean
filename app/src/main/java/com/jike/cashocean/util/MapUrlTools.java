@@ -43,6 +43,19 @@ public class MapUrlTools {
         return sign;
     }
 
+
+    public static String getSignObject(Map<String, Object> map, boolean isNeedTOken) {
+        if (isNeedTOken) {
+            dealMapObject(map);
+        } else {
+            dealMapObject(map);
+
+        }
+        String urlParamsByMap = getUrlParamsByMapObject(map);
+        String encryptMD5ToString = EncryptUtils.encryptMD5ToString(urlParamsByMap);
+        String sign = encryptMD5ToString.toLowerCase();
+        return sign;
+    }
     public static String getSign(Map<String, String> map, boolean isNeedTOken) {
         if (isNeedTOken) {
             dealMap(map);
@@ -55,7 +68,18 @@ public class MapUrlTools {
         String sign = encryptMD5ToString.toLowerCase();
         return sign;
     }
-
+    //添加公共参数
+    public static void dealMapObject(Map<String, Object> map) {
+        String string = SPUtils.getInstance().getString(Key.LANGUAGE_KEY, "");
+        if (TextUtils.isEmpty(string)) {
+            map.put("lang", "en");
+        } else {
+            map.put("lang", "ph");
+        }
+        map.put("timestamp", System.currentTimeMillis() / 1000 + "");
+        map.put(Key.VERSION, String.valueOf(AppUtils.getAppVersionCode()));
+        map.put(Key.TOKEN, SPUtils.getInstance().getString(Key.TOKEN));
+    }
     //添加公共参数
     public static void dealMap(Map<String, String> map) {
         String string = SPUtils.getInstance().getString(Key.LANGUAGE_KEY, "");
@@ -93,6 +117,33 @@ public class MapUrlTools {
         }
         StringBuffer sb = new StringBuffer();
         for (Map.Entry<String, String> entry : map.entrySet()) {
+            sb.append(entry.getKey() + "=" + entry.getValue());
+            sb.append("&");
+        }
+        String s = sb.toString();
+        String substring = "";
+        if (s.endsWith("&")) {
+            int length = s.length();
+            substring = s.substring(0, length - 1);
+            if (BuildConfig.DEBUG) {
+                LogUtils.e("Map 转 URL", substring);
+            }
+        }
+        return substring;
+    }
+
+    /**
+     * 将map转换成url
+     *
+     * @param map
+     * @return
+     */
+    public static String getUrlParamsByMapObject(Map<String, Object> map) {
+        if (map == null) {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             sb.append(entry.getKey() + "=" + entry.getValue());
             sb.append("&");
         }

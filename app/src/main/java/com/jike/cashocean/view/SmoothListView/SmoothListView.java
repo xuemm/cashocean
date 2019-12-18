@@ -144,23 +144,7 @@ public class SmoothListView extends ListView implements OnScrollListener {
             mPullLoading = false;
             mFooterView.show();
             mFooterView.setState(SmoothListViewFooter.STATE_NORMAL);
-            //make sure "pull up" don't show a line in bottom when listview with one page
             setFooterDividersEnabled(true);
-            // both "pull up" and "click" will invoke load more. 增加一个防止抖动的按钮此处,防止别人一直点
-//            RxView.clicks(mFooterView)
-//                    .throttleFirst(7, TimeUnit.SECONDS)
-//                    .subscribe(new Consumer<Object>() {
-//                        @Override
-//                        public void accept(Object o) throws Exception {
-//                            startLoadMore();
-//                        }
-//                    });
-//            mFooterView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    startLoadMore();
-//                }
-//            });
         }
     }
 

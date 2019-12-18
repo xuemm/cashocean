@@ -18,6 +18,7 @@
         app:banner_transitionEffect="alpha" />
 
     <LinearLayout
+        android:id="@+id/line_sign"
         android:layout_width="match_parent"
         android:layout_height="34dp"
         android:background="#18B239"

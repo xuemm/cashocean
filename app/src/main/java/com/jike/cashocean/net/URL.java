@@ -2,6 +2,7 @@ package com.jike.cashocean.net;
 
 public interface URL {
     //基础
+//    String BASEURL = "http://apit.cashmall24.com/"; //测试环境
     String BASEURL = "http://api.cashmall24.com/"; //正式环境
     //    String BASEURL = "http://api.cashmarktonline.com/"; //正式环境
     //首页
@@ -29,5 +30,25 @@ public interface URL {
 
     String CHECK_PROTOCL = "https://yndc.oss-ap-southeast-5.aliyuncs.com/docs/privacyprotocol" +
             ".html";//注册协议
+    /*记账模块*/
+    String GET_USER_BILL = "?service=App.CashBook.Index";//显示用户应还笔数,和金额
+    String GET_ALL_APP = "?service=App.CashBook.App_list"; //查询系统app
+    String ADD_BILL = "?service=App.CashBook.Add";//添加账单
+    String GET_USER_BILL_INFO = "?service=App.CashBook.Lists";//查询用户账单列表
+    String UPDATE_BILL_STATUS = "?service=App.CashBook.UpStatus";//更新账单状态
+    /*发现模块*/
+    String FIND_INDEX = "?service=App.Find.Index"; //发现模块首页
+    String FIND_INDEX_INFO = "?service=App.Find.Info"; //文章详情
+
+    //证件上传
+    String FACE_DIFF = "?service=App.Find.Face_diff";
+
+    //用户通讯录上传
+    String USER_CONTEAC = "?service=App.UserContacts.Saves";
+    //打分接口
+    String SCOREBOARD = "?service=App.Find.Scoreboard";
+    //打分返回推荐产品
+    String RECOMMEND_PRODUCT = "?service=App.Find.Scoreboard_app_list";
+
 }
 

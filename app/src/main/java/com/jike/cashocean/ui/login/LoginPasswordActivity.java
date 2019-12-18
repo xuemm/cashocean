@@ -22,6 +22,7 @@ import com.jike.cashocean.model.LoginEntity;
 import com.jike.cashocean.net.Key;
 import com.jike.cashocean.service.GetAppListService;
 import com.jike.cashocean.ui.MainActivity;
+import com.jike.cashocean.ui.MainNewActivity;
 import com.jike.cashocean.ui.base.BaseActivity;
 import com.jike.cashocean.ui.login.compoment.DaggerLoginComponent;
 import com.jike.cashocean.ui.login.contract.LoginPasswordContact;
@@ -176,14 +177,14 @@ public class LoginPasswordActivity extends BaseActivity<LoginPasswordPresenter> 
                 if (loginEntity.getData().getCode() == 100) {
                     SPUtils.getInstance().put(Key.TOKEN,
                             loginEntity.getData().getDatas().getToken());
-                    SPUtils.getInstance().put(Key.IS_AUTHENTICAITON,
-                            loginEntity.getData().getDatas().getIs_auth());
+//                    SPUtils.getInstance().put(Key.IS_AUTHENTICAITON,
+//                            loginEntity.getData().getDatas().getIs_auth());
                     AppEventsLogger.newLogger(this).logEvent(Key.LOGIN);
                     if (!SPUtils.getInstance().getBoolean(KeyValue.IS_UPLOAD_APPLIST)) {
                         Intent intent = new Intent(this, GetAppListService.class);
                         startService(intent);
                     }
-                    ActivityUtils.finishToActivity(MainActivity.class, false, true);
+                    ActivityUtils.finishToActivity(MainNewActivity.class, false, true);
                 } else {
                     ToastUtils.showLong(loginEntity.getData().getMsg());
                 }

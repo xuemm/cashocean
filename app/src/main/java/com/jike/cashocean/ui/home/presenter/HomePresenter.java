@@ -15,6 +15,7 @@ import com.jike.cashocean.net.BaseObserver;
 import com.jike.cashocean.net.Key;
 import com.jike.cashocean.net.RxSchedulers;
 import com.jike.cashocean.ui.MainActivity;
+import com.jike.cashocean.ui.MainNewActivity;
 import com.jike.cashocean.ui.base.BasePresenter;
 import com.jike.cashocean.ui.home.HomeFragment;
 import com.jike.cashocean.ui.home.api.ApiHome;
@@ -148,7 +149,7 @@ public class HomePresenter extends BasePresenter<HomeFragment> implements HomeCo
         paramsMap.put(Key.VERSION, String.valueOf(AppUtils.getAppVersionCode()));
         paramsMap.put(Key.TOKEN, SPUtils.getInstance().getString(Key.TOKEN));
         paramsMap.put(Key.ANDROID_ID, DeviceUtils.getAndroidID());
-        paramsMap.put(Key.ADVERTISING_ID, MainActivity.advertising_id);
+        paramsMap.put(Key.ADVERTISING_ID, MainNewActivity.advertising_id);
         paramsMap.put("appid", id);
         paramsMap.put(Key.SIGN, MapUrlTools.getSign(paramsMap));
         _apiHome.clickItemApp(paramsMap)

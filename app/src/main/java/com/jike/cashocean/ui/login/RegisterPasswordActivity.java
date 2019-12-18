@@ -19,7 +19,7 @@ import com.jike.cashocean.BuildConfig;
 import com.jike.cashocean.R;
 import com.jike.cashocean.model.RegisterUserEntity;
 import com.jike.cashocean.net.Key;
-import com.jike.cashocean.ui.MainActivity;
+import com.jike.cashocean.ui.MainNewActivity;
 import com.jike.cashocean.ui.base.BaseActivity;
 import com.jike.cashocean.ui.login.compoment.DaggerLoginComponent;
 import com.jike.cashocean.ui.login.contract.RegisterPasswordContact;
@@ -77,7 +77,8 @@ public class RegisterPasswordActivity extends BaseActivity<RegisterPasswordPrese
             if (phoneNum.startsWith("9") && phoneNum.length() == 10) {
                 if (!TextUtils.isEmpty(password)) {
                     if (password.length() == 6) {
-                        String fingerprintDeviceN = EncryptUtils.encryptMD5ToString(DeviceUtils.getAndroidID());
+                        String fingerprintDeviceN =
+                                EncryptUtils.encryptMD5ToString(DeviceUtils.getAndroidID());
                         if (BuildConfig.DEBUG) {
                             LogUtils.e("设备号" + fingerprintDeviceN);
                         }
@@ -104,7 +105,7 @@ public class RegisterPasswordActivity extends BaseActivity<RegisterPasswordPrese
         paramsMap.put(Key.REGISTER_TYPE, "1");//类型1 短信 2facebook
         paramsMap.put(Key.PASSWORD, password);
         paramsMap.put(Key.ANDROID_ID, DeviceUtils.getAndroidID());
-        paramsMap.put(Key.ADVERTISING_ID, MainActivity.advertising_id);
+        paramsMap.put(Key.ADVERTISING_ID, MainNewActivity.advertising_id);
         String urlParamsByMap = MapUrlTools.getUrlParamsByMap(paramsMap);
         String signs = EncryptUtils.encryptMD5ToString(urlParamsByMap).toLowerCase();
         paramsMap.put(Key.SIGN, signs);
@@ -128,7 +129,7 @@ public class RegisterPasswordActivity extends BaseActivity<RegisterPasswordPrese
             if (registerUser.getData().getCode() == 100) {
                 SPUtils.getInstance().put(Key.TOKEN, registerUser.getData().getDatas().getToken());
                 AppEventsLogger.newLogger(this).logEvent(Key.REGISTER);
-                ActivityUtils.finishToActivity(MainActivity.class, false, true);
+                ActivityUtils.finishToActivity(MainNewActivity.class, false, true);
             } else {
                 ToastUtils.showLong(registerUser.getData().getMsg());
             }

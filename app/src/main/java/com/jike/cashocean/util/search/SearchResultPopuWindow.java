@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.SizeUtils;
 import com.jike.cashocean.R;
 
 import java.util.ArrayList;
@@ -26,21 +28,23 @@ public class SearchResultPopuWindow {
     private Builder mBuilder;
 
     private final PopupWindow window;
-    private TextView parentView;
+    private LinearLayout parentView;
     private List<TextView> viewList;
     private final RecyclerView recyclerView;
 
     private SearchResultPopuWindow(final Builder builder) {
         this.mBuilder = builder;
         mContext = builder.mContext;
-        contentView = LayoutInflater.from(mContext).inflate(R.layout.search_result_popup_layout, null);
+        contentView = LayoutInflater.from(mContext).inflate(R.layout.search_result_popup_layout,
+                null);
 
         recyclerView = contentView.findViewById(R.id.search_result_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
         recyclerView.setAdapter(builder.getSearchResultRvAdapter());
         //分割线
-        recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(mContext,
+                DividerItemDecoration.VERTICAL));
 
         window = new PopupWindow(contentView, builder.width, builder.height, false);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -55,10 +59,11 @@ public class SearchResultPopuWindow {
     public void show(final View parent) {
         int[] location = new int[2];
         parent.getLocationOnScreen(location);
-        parentView = (TextView) parent;
+        parentView = (LinearLayout) parent;
         //根据parentView的宽重新赋值window的宽，同时确定window的位置
         window.setWidth(parent.getWidth());
-        window.showAtLocation(parent, Gravity.NO_GRAVITY, location[0], location[1] + parent.getHeight());
+        window.showAtLocation(parent, Gravity.NO_GRAVITY, location[0],
+                location[1] + parent.getHeight());
     }
 
     public void dismiss() {
@@ -68,7 +73,7 @@ public class SearchResultPopuWindow {
     public static class Builder {
         private Context mContext;
         private SearchResultRvAdapter searchResultRvAdapter;
-        private int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        private int height = SizeUtils.dp2px(188);
         private int width = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         public int getHeight() {

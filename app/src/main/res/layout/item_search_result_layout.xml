@@ -9,25 +9,33 @@
     android:orientation="horizontal"
     tools:ignore="MissingConstraints">
 
-    <ImageView
-        android:id="@+id/item_search_result_icon_left"
-        android:layout_width="30dp"
+    <View
+        android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:padding="5dp"
-        android:src="#333" />
+        android:background="@color/font_black_6" />
 
     <TextView
         android:id="@+id/item_search_result_content"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="3dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+
+        android:textColor="@color/color_black"
+        android:textSize="12sp"
+        tools:text="fdafd" />
 
     <ImageView
         android:id="@+id/item_search_result_icon_right"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_marginRight="10dp"
         android:padding="5dp"
-        android:src="#333" />
+        android:src="@mipmap/icon_jiantou" />
 
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/font_black_6" />
 </LinearLayout>

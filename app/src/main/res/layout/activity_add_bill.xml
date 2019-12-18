@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.bill.AddBillActivity">
 
@@ -27,6 +28,7 @@
             android:textColor="@color/color_black" />
 
         <LinearLayout
+            android:id="@+id/ll_search"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="30dp"
@@ -42,16 +44,15 @@
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:maxLength="10"
+                android:maxLength="20"
                 android:paddingLeft="5dp"
                 android:singleLine="true" />
 
-            <ImageView
-                android:id="@+id/iv_query"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:src="@mipmap/icon_query" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/main_color" />
 
             <TextView
                 android:id="@+id/tv_query"
@@ -94,20 +95,26 @@
                 android:id="@+id/iv_icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"
+                android:src="@drawable/bg_app_name"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_app_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="A" />
+                android:text="A"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp" />
+        android:layout_height="10dp"
+        android:background="@color/font_black_6" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -115,11 +122,23 @@
 
 
         <TextView
+            android:id="@+id/tv_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:text="@string/loan_amount"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/tv_hint"
+            android:gravity="center_vertical"
+            android:text="(₱)"
             android:textColor="@color/color_black" />
 
         <EditText
@@ -131,7 +150,8 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="@string/please_fill_in"
-            android:maxLength="7"
+            android:inputType="number"
+            android:maxLength="9"
             android:singleLine="true"
             android:textColor="@color/color_black"
             android:textSize="13sp" />
@@ -161,13 +181,14 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|right"
             android:hint="@string/please_select"
             android:textColor="@color/color_black"
             android:textSize="13sp" />
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_add_bill"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="30dp"

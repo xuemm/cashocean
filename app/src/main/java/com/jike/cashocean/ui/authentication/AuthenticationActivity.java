@@ -251,8 +251,8 @@ public class AuthenticationActivity extends BaseActivity<AuthenticationPresenter
 
     private String getPhotoName() {
         String nameStr =
-                String.valueOf(System.currentTimeMillis()) + SPUtils.getInstance().getString(Key.TOKEN)+".png";
-        return EncryptUtils.encryptMD5ToString(nameStr);
+                String.valueOf(System.currentTimeMillis()) + SPUtils.getInstance().getString(Key.TOKEN);
+        return EncryptUtils.encryptMD5ToString(nameStr)+".png";
     }
 
     /**

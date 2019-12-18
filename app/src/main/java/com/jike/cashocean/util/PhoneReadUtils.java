@@ -1,13 +1,20 @@
 package com.jike.cashocean.util;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.provider.ContactsContract;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
 import com.jike.cashocean.model.AppInfoBean;
+import com.jike.cashocean.model.ContactsData;
 import com.jike.cashocean.ui.CashMallApplication;
 
 import java.util.ArrayList;
@@ -85,5 +92,43 @@ public class PhoneReadUtils {
             }
         }
         return false;
+    }
+
+
+    /**
+     * 获取手机联系人
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />}</p>
+     * <p>需添加权限
+     * {@code <uses-permission android:name="android.permission.READ_CONTACTS" />}</p>
+     */
+    public static String getAllContactInfo() {
+        List<ContactsData> contactsDataList = new ArrayList<>();
+        ContentResolver resolver = Utils.getApp().getContentResolver();
+        Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                null, null, null);
+        try {
+            while (cursor.moveToNext()) {
+                ContactsData contactsData = new ContactsData();
+                //读取通讯录的姓名
+                String name = cursor.getString(cursor.getColumnIndex(ContactsContract
+                        .CommonDataKinds.Phone.DISPLAY_NAME));
+                //读取通讯录的号码
+                String phone = cursor.getString(cursor.getColumnIndex(ContactsContract
+                        .CommonDataKinds.Phone.NUMBER));
+                contactsData.setPhone(phone);
+                contactsData.setName(name);
+                contactsDataList.add(contactsData);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        String contactAllStringData = new Gson().toJson(contactsDataList);
+        LogUtils.e("抓取的通讯录:" + contactAllStringData);
+        return contactAllStringData;
     }
 }

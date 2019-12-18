@@ -139,7 +139,6 @@ public class HomeAppListAdapter extends BaseListAdapter<HomeListData.DataBean.Da
             holder.llroot_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String isAuth = SPUtils.getInstance().getString(Key.IS_AUTHENTICAITON, "0");
                     SPUtils.getInstance().put(listBean.getApp_name(), true);
                     _onClickListener.clickItme(listBean.getId());
                 }

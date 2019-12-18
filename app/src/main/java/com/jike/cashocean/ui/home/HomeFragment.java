@@ -32,7 +32,7 @@ import com.jike.cashocean.model.MessageBean;
 import com.jike.cashocean.model.ServerDataCode;
 import com.jike.cashocean.net.Key;
 import com.jike.cashocean.net.exception.SERVER_CODE;
-import com.jike.cashocean.ui.MainActivity;
+import com.jike.cashocean.ui.MainNewActivity;
 import com.jike.cashocean.ui.authentication.AuthenticationActivity;
 import com.jike.cashocean.ui.base.BaseFragment;
 import com.jike.cashocean.ui.base.IStateView;
@@ -207,7 +207,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements SmoothL
                     public void onEglish() {
                         SPUtils.getInstance().put(Key.LANGUAGE_KEY, "");
                         languageSelectDialog.dismiss();
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        Intent intent = new Intent(getActivity(), MainNewActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent
                                 .FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -217,7 +217,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements SmoothL
                     public void onTagalog() {
                         SPUtils.getInstance().put(Key.LANGUAGE_KEY, LanguageConstants.TAGALOG);
                         languageSelectDialog.dismiss();
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        Intent intent = new Intent(getActivity(), MainNewActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent
                                 .FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -591,7 +591,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements SmoothL
         if (clickAppListEntity != null) {
             if (clickAppListEntity.getRet() == 200) {
                 if (clickAppListEntity.getData().getCode() == 100) {
-                    String isAuth = SPUtils.getInstance().getString(Key.IS_AUTHENTICAITON, "0");
+                    String isAuth = SPUtils.getInstance().getString(Key.IS_AUTHENTICAITON, "1");
                     if ("0".equals(isAuth)) {
 //                        ActivityUtils.startActivity(AuthenticationActivity.class);
                         Intent intent = new Intent(getActivity(), AuthenticationActivity.class);

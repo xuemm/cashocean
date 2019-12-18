@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="135dp"
+    android:layout_height="128dp"
     android:background="@color/main_color"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -37,17 +37,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/bookkeep_bi"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
-                    tools:text="@string/bookkeep_bi" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
-                android:textColor="@color/white"
-                tools:text="@string/bookkeep_should_repayment" />
+                android:text="@string/bookkeep_should_repayment"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <View
@@ -81,9 +82,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text=" ₱"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
-                    tools:text="Rp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <TextView
@@ -96,7 +98,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_see_more"
+        android:id="@+id/tv_add_bill"
         android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:background="@drawable/shape_rectangle_white_box_bg"
@@ -105,7 +107,7 @@
         android:paddingTop="5dp"
         android:paddingRight="12dp"
         android:paddingBottom="5dp"
-        android:text="@string/bookkeep_see_more"
+        android:text="@string/bookkeep_add_bill"
         android:textSize="13sp"
         android:textStyle="bold" />
 </LinearLayout>

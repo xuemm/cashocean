@@ -1,2 +1,2 @@
-include ':app', ':verificationlibrary',':loadsir', ':cameraview_1.6.1'
+include ':app', ':verificationlibrary', ':loadsir', ':cameraview_1.6.1', ':pickerview', ':wheelview'
 rootProject.name='CashOcean'

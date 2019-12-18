@@ -8,6 +8,7 @@ import com.jike.cashocean.model.HomeListData;
 import com.jike.cashocean.model.MessageBean;
 import com.jike.cashocean.net.URL;
 
+import java.net.URI;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -16,6 +17,8 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /**
@@ -59,4 +62,14 @@ public interface ApiHome {
     Observable<BaseBean> uploadUserAppList(
             @FieldMap Map<String, String> mapInfo
     );
+
+    //上传用户包信息
+    @FormUrlEncoded
+    @POST(URL.USER_CONTEAC)
+    Observable<BaseBean> uploadUserContent(
+            @FieldMap Map<String, String> mapInfo
+    );
+
+
+
 }

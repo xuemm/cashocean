@@ -32,8 +32,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 public class MainNewActivity extends BaseActivity {
-    @BindView(R.id.bottom_bar)
-    BottomBarLayout bottomBar;
+    private static BottomBarLayout bottomBar;
     public static String advertising_id = "";
     long mExitTime;//两秒内连续按2次退出
     @BindView(R.id.vp_main)
@@ -45,6 +44,9 @@ public class MainNewActivity extends BaseActivity {
         return R.layout.activity_main_new;
     }
 
+    public static void changePage(int pageIndex) {
+        bottomBar.setCurrentItem(pageIndex);
+    }
 
     @Override
     public void initInjector() {
@@ -67,6 +69,7 @@ public class MainNewActivity extends BaseActivity {
 
     @Override
     public void bindView(View view, Bundle sacedInstanceState) {
+        bottomBar = findViewById(R.id.bottom_bar);
         mFragments[0] = HomeFragment.newInstance();
         mFragments[1] = BookkeeperFragment.newInstance();
         mFragments[2] = FindFragment.newInstance();

@@ -1,20 +1,13 @@
 package com.jike.cashocean.ui;
 
-import android.content.Context;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
-
-import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chaychan.library.BottomBarItem;
 import com.chaychan.library.BottomBarLayout;
-import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.jike.cashocean.BuildConfig;
 import com.jike.cashocean.R;
@@ -23,9 +16,6 @@ import com.jike.cashocean.ui.base.BaseActivity;
 import com.jike.cashocean.ui.base.SupportFragment;
 import com.jike.cashocean.ui.home.HomeFragment;
 import com.jike.cashocean.ui.my.MyFragment;
-import com.jike.cashocean.util.PhoneReadUtils;
-
-import java.util.Locale;
 
 import butterknife.BindView;
 import io.reactivex.Observable;

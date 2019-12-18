@@ -12,7 +12,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.jike.cashocean.R;
 import com.jike.cashocean.model.ResetPasswordEntity;
-import com.jike.cashocean.ui.MainActivity;
+import com.jike.cashocean.ui.MainNewActivity;
 import com.jike.cashocean.ui.base.BaseActivity;
 import com.jike.cashocean.ui.login.compoment.DaggerLoginComponent;
 import com.jike.cashocean.ui.login.contract.FindPasswordRestContact;
@@ -99,7 +99,7 @@ public class FindPasswordRestActivity extends BaseActivity<FindPasswordRestPrese
         if (resetPasswordEntity != null) {
             if (resetPasswordEntity.getRet() == 200) {
                 if (resetPasswordEntity.getData().getCode() == 100) {
-                    ActivityUtils.finishToActivity(MainActivity.class, false, true);
+                    ActivityUtils.finishToActivity(MainNewActivity.class, false, true);
                 } else {
                     ToastUtils.showLong(resetPasswordEntity.getData().getMsg());
                 }

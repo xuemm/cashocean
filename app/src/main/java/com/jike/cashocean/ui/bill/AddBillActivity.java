@@ -1,24 +1,34 @@
 package com.jike.cashocean.ui.bill;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.jike.cashocean.Content.Code;
 import com.jike.cashocean.R;
+import com.jike.cashocean.component.GlideApp;
+import com.jike.cashocean.model.NormalBean;
+import com.jike.cashocean.model.SystemAppBean;
 import com.jike.cashocean.ui.base.BaseActivity;
+import com.jike.cashocean.ui.bill.compoment.DaggerBillComponent;
+import com.jike.cashocean.ui.bill.contract.BillContract;
+import com.jike.cashocean.ui.bill.module.BillModule;
 import com.jike.cashocean.ui.bill.preseneter.AddBillPresenter;
+import com.jike.cashocean.util.DateUtils;
 import com.jike.cashocean.util.search.PopupRvClickListener;
 import com.jike.cashocean.util.search.SearchResultPopuWindow;
 import com.jike.cashocean.util.search.SearchResultRvAdapter;
@@ -33,7 +43,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 
-public class AddBillActivity extends BaseActivity<AddBillPresenter> {
+public class AddBillActivity extends BaseActivity<AddBillPresenter> implements BillContract.View {
 
 
     @BindView(R.id.ibn_back)
@@ -44,18 +54,20 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
     TextView tvTitleRight;
     @BindView(R.id.et_search)
     EditText etSearch;
+    @BindView(R.id.ll_search)
+    LinearLayout llSearch;
     @BindView(R.id.iv_icon)
     ImageView ivIcon;
     @BindView(R.id.tv_app_name)
     TextView tvAppName;
     @BindView(R.id.tv_fill_money)
-    TextView tvFillMoney;
+    EditText tvFillMoney;
     @BindView(R.id.tv_select_time)
     TextView tvSelectTime;
-    @BindView(R.id.iv_query)
-    ImageView ivQuery;
     @BindView(R.id.tv_query)
     TextView tvQuery;
+    @BindView(R.id.tv_add_bill)
+    TextView tvAddBill;
 
     @Override
     public int getContentLayout() {
@@ -64,18 +76,18 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
 
     @Override
     public void initInjector() {
-
+        DaggerBillComponent.builder().billModule(new BillModule("添加账单", this)).build().inject(this);
     }
 
     private CharSequence cc;
 
     private void showChooseData() {
         KeyboardUtils.hideSoftInput(this);//隐藏软键盘
-        Calendar selecetDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
+        Calendar currDate = Calendar.getInstance();
+        startDate.set(currDate.get(Calendar.YEAR) - 50, 0, 1);
         Calendar endDate = Calendar.getInstance();
-        startDate.set(1965, 0, 1);
-        endDate.set(2003, 11, 31);
+        endDate.set(currDate.get(Calendar.YEAR) + 100, 11, 31);
         TimePickerBuilder timePickerBuilder = new TimePickerBuilder(this,
                 new OnTimeSelectListener() {
                     @Override
@@ -87,7 +99,8 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
                 })
                 .setType(new boolean[]{true, true, true, false, false, false})
                 .setCancelText(getString(R.string.cancel))
-                .setSubmitText(getString(R.string.pickerview_submit))
+                .setDate(currDate)
+                .setSubmitText(getString(R.string.confirm))
                 .setOutSideCancelable(false)
                 .setRangDate(startDate, endDate);
         timePickerBuilder.build().show();
@@ -98,26 +111,40 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
         ibnBack.setOnClickListener(view1 -> finish());
         tvTitle.setText(getString(R.string.add_bill));
         tvTitleRight.setVisibility(View.GONE);
+        tvQuery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(etSearch.getText().toString())) {
+                    ToastUtils.showShort(getString(R.string.add_bill_please_input_appname));
+                } else {
+                    if (popuWindow != null) {
+                        popuWindow.dismiss();
+                    }
+                    appLogoChange(false, etSearch.getText().toString(), "");
+                }
+            }
+        });
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                cc = charSequence;
+//                LogUtils.e("before:" + charSequence + ":" + i + ":" + i1 + ":" + i2);
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                ToastUtils.showShort(charSequence);
+//                LogUtils.e("on:" + charSequence + ":" + i + ":" + i1 + ":" + i2);
+//                ToastUtils.showShort(charSequence);
+                cc = charSequence;
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 if (cc.length() > 0) {
-                    ivQuery.setVisibility(View.GONE);
-                    tvQuery.setVisibility(View.GONE);
-                    searchStart(cc.toString());
-                } else {
-                    ivQuery.setVisibility(View.VISIBLE);
-                    tvQuery.setVisibility(View.VISIBLE);
+                    if (isNeedSerach) {
+                        searchStart(cc.toString());
+                    } else {
+                        isNeedSerach = true;
+                    }
                 }
 
 
@@ -129,20 +156,70 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
                 showChooseData();
             }
         });
+        tvFillMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (count != before) {
+                    String sss = "";
+                    String string = s.toString().replace(",", "");
+                    int b = string.length() / 3;
+                    if (string.length() >= 3) {
+                        int yushu = string.length() % 3;
+                        if (yushu == 0) {
+                            b = string.length() / 3 - 1;
+                            yushu = 3;
+                        }
+                        for (int i = 0; i < b; i++) {
+                            sss = sss + string.substring(0, yushu) + "," + string.substring
+                                    (yushu, 3);
+                            string = string.substring(3, string.length());
+                        }
+                        sss = sss + string;
+                        tvFillMoney.setText(sss);
+                    }
+                }
+                tvFillMoney.setSelection(tvFillMoney.getText().length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        tvAddBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etSearch.getText().length() == 0) {
+                    ToastUtils.showShort(R.string.add_bill_please_input_appname);
+                    return;
+                }
+                if (TextUtils.isEmpty(tvFillMoney.getText().toString())) {
+                    ToastUtils.showShort(R.string.add_bill_please_input_repaymoney);
+                    return;
+                }
+                if (TextUtils.isEmpty(tvSelectTime.getText().toString())) {
+                    ToastUtils.showShort(R.string.add_bill_please_select_repaytime);
+                    return;
+                }
+                tvSelectTime.getText();
+                showLoadingDialog();
+                mPresenter.addBill(etSearch.getText().toString().trim(),
+                        tvFillMoney.getText().toString().replace(",", ""),
+                        DateUtils.date2TimeStamp(tvSelectTime.getText().toString() + " 23:59:59"));
+            }
+        });
     }
 
     @Override
     public void initData() {
         searchResultList = new ArrayList<>();
-        allList = new ArrayList();
-        allList.add("Pesopop");
-        allList.add("Cash2U");
-        allList.add("Pautang Online");
-        allList.add("Juanhand");
-        allList.add("Jetpeso");
-        allList.add("BeeLoan");
-        allList.add("Pesoloan");
-        allList.add("Pesogogo");
+        allList = new ArrayList<>();
+        mPresenter.getSystemApp();
     }
 
     @Override
@@ -155,6 +232,29 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
         return false;
     }
 
+    @Override
+    public void getSystemApplist(SystemAppBean systemAppBean) {
+        allList.clear();
+        allList.addAll(systemAppBean.getData().getDatas().getList());
+    }
+
+    @Override
+    public void addBillResult(NormalBean normalBean) {
+        hideLoadingDialog();
+        if (normalBean == null) {
+            return;
+        }
+        if (normalBean.getData().getCode() == Code.SUCCESS_CODE) {
+
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            ToastUtils.showShort(normalBean.getData().getMsgX());
+        }
+
+    }
+
     /**
      * 搜索runnable,500ms不输入新字符，触发搜索，可自己修改
      */
@@ -165,20 +265,22 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
         public void pushKeyWord(String keyWord) {
             this.keyWord = keyWord;
             handler.removeCallbacks(this);
-            handler.postDelayed(this, 500);
+            handler.postDelayed(this, 100);
         }
 
         @Override
         public void run() {
             //此处发起Http请求
-            getCompileList(searchKeyWord, allList);
             wordSearching = searchKeyWord;
+            if (!TextUtils.isEmpty(searchKeyWord)) {
+                getCompileList(searchKeyWord, allList);
+            }
         }
 
     }
 
-    private List<String> searchResultList;
-    private List<String> allList;
+    private List<SystemAppBean.DataBean.DatasBean.ListBean> searchResultList;
+    private List<SystemAppBean.DataBean.DatasBean.ListBean> allList;
 
     SearchRunnable searchRunnable = new SearchRunnable();
     String searchKeyWord;//用于在500ms内缓存用户输入的关键字
@@ -196,21 +298,28 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
         searchRunnable.pushKeyWord(keyword);
     }
 
+    boolean isNeedSerach = true;
+
     /**
      * 模拟模糊查询
      * <p>
      * 高级的：
      * https://www.jianshu.com/p/f4bc6655ec18
      */
-    private void getCompileList(String keyWord, List<String> list) {
+    private void getCompileList(String keyWord,
+                                List<SystemAppBean.DataBean.DatasBean.ListBean> list) {
         searchResultList.clear();
-        Pattern pattern = Pattern.compile(keyWord);
+        Pattern pattern = Pattern.compile(keyWord.toLowerCase());
         for (int i = 0; i < list.size(); i++) {
-            Matcher matcher = pattern.matcher(list.get(i));
-            if (matcher.find()) {
-                searchResultList.add(list.get(i));
+            String s = list.get(i).getApp_name().toLowerCase();
+            if (keyWord.length() <= s.length()) {
+                Matcher matcher = pattern.matcher(s.substring(0, keyWord.length()));
+                if (matcher.find()) {
+                    searchResultList.add(list.get(i));
+                }
             }
         }
+
         //adapter在最外层new出来，由builder传入window，方便点击事件的监听
         SearchResultRvAdapter adapter = new SearchResultRvAdapter(this, searchResultList);
         //new window
@@ -218,22 +327,42 @@ public class AddBillActivity extends BaseActivity<AddBillPresenter> {
                 .setSearchResultRvAdapter(adapter)
                 .build();
         //show方法传入editText，用来完成展示位置，和宽度计算
-        popuWindow.show(etSearch);
+        popuWindow.show(llSearch);
         //recycleView各个部分的点击监听
         adapter.setPopupRvClickListener(new PopupRvClickListener() {
             @Override
-            public void onItemChildClick(int id, int position, String content) {
-                if (id == R.id.item_search_result_icon_left) {
-                    Toast.makeText(AddBillActivity.this, "点击左侧icon" + position + content,
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.item_search_result_icon_right) {
-                    Toast.makeText(AddBillActivity.this, "点击右侧icon" + position + content,
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(AddBillActivity.this, "点击item" + position + content,
-                            Toast.LENGTH_SHORT).show();
-                }
+            public void onItemChildClick(int id,
+                                         int position,
+                                         String content) {
+//                Toast.makeText(AddBillActivity.this, position + content,
+//                        Toast.LENGTH_SHORT).show();
+                isNeedSerach = false;
+                popuWindow.dismiss();
+                etSearch.setText(content);
+                etSearch.setSelection(etSearch.getText().length());
+                appLogoChange(true,
+                        searchResultList.get(position).getApp_name(),
+                        searchResultList.get(position).getLogo_img());
+
             }
         });
+    }
+
+    public void appLogoChange(boolean isHave, String appName, String appLogo) {
+        if (isHave) {
+            tvAppName.setVisibility(View.GONE);
+            ivIcon.setVisibility(View.VISIBLE);
+            GlideApp.with(this)
+                    .load(appLogo)
+                    .placeholder(R.drawable.bg_app_name)
+                    .fitCenter()
+                    .into(ivIcon);
+        } else {
+            String name = appName.toUpperCase();
+            tvAppName.setText(name.substring(0, 1));
+            ivIcon.setImageResource(R.drawable.bg_app_name);
+            ivIcon.setVisibility(View.VISIBLE);
+            tvAppName.setVisibility(View.VISIBLE);
+        }
     }
 }

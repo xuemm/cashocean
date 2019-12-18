@@ -175,7 +175,7 @@ public class MyAppListActivity extends BaseActivity<MyAppListPresenter> implemen
         if (clickAppListEntity != null) {
             if (clickAppListEntity.getRet() == 200) {
                 if (clickAppListEntity.getData().getCode() == 100) {
-                    String isAuth = SPUtils.getInstance().getString(Key.IS_AUTHENTICAITON, "0");
+                    String isAuth = SPUtils.getInstance().getString(Key.IS_AUTHENTICAITON, "1");
                     if ("0".equals(isAuth)) {
                         ActivityUtils.startActivity(AuthenticationActivity.class);
                     }

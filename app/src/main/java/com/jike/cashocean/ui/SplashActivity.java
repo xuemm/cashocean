@@ -2,8 +2,12 @@ package com.jike.cashocean.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.facebook.appevents.AppEventsLogger;
@@ -25,10 +29,6 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class SplashActivity extends BaseActivity {
-    private static final int GUIDE_WHAT = 1039;
-    @BindView(R.id.tv_timer)
-    TextView tvTimer;
-
     @Override
     public int getContentLayout() {
         return R.layout.activity_splash_cash;
@@ -39,62 +39,25 @@ public class SplashActivity extends BaseActivity {
 
     }
 
-//    boolean isManualSkip;
-
     @SuppressLint({"CheckResult", "MissingPermission"})
     @Override
     public void bindView(View view, Bundle sacedInstanceState) {
         AppEventsLogger.newLogger(this).logEvent(Key.START_APP);
-        tvTimer.setText(getString(R.string.skip) + " " + 3);
-        tvTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityUtils.startActivity(MainNewActivity.class);
-                finish();
-            }
-        });
 
-        Observable.interval(1, 2, TimeUnit.SECONDS)
-                .compose(RxSchedulers.applySchedulers())
-                .compose(bindToLife())
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        if (aLong == 2) {
-//                            if (isManualSkip) {
-//                                return;
-//                            }
-                            ActivityUtils.startActivity(MainNewActivity.class);
-                            finish();
-                        } else {
-                            long timer = 2 - aLong;
-                            if (timer >= 0) {
-                                tvTimer.setText(getString(R.string.skip) + " " + timer);
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            ActivityUtils.startActivity(MainNewActivity.class);
+            finish();
+        }
+    };
 
     @Override
     public void initData() {
-
+        handler.sendEmptyMessageDelayed(0, 1500);
     }
 
     @Override

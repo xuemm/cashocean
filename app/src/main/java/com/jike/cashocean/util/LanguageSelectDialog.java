@@ -15,7 +15,6 @@ import android.widget.RadioGroup;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.jike.cashocean.Content.KeyValue;
 import com.jike.cashocean.R;
 import com.jike.cashocean.net.Key;
 import com.jike.cashocean.util.languageutil.LanguageConstants;
