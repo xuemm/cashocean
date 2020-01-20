@@ -22,6 +22,7 @@ import com.jike.cashocean.ui.base.SupportFragment;
 import com.jike.cashocean.ui.home.BookkeeperFragment;
 import com.jike.cashocean.ui.home.FindFragment;
 import com.jike.cashocean.ui.home.HomeFragment;
+import com.jike.cashocean.ui.home.HomeNewFragment;
 import com.jike.cashocean.ui.my.MyFragment;
 
 import butterknife.BindView;
@@ -71,6 +72,7 @@ public class MainNewActivity extends BaseActivity {
     public void bindView(View view, Bundle sacedInstanceState) {
         bottomBar = findViewById(R.id.bottom_bar);
         mFragments[0] = HomeFragment.newInstance();
+//        mFragments[0] = HomeNewFragment.newInstance();
         mFragments[1] = BookkeeperFragment.newInstance();
         mFragments[2] = FindFragment.newInstance();
         mFragments[3] = MyFragment.newInstance();

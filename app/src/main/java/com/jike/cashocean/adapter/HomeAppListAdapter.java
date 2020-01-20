@@ -35,8 +35,6 @@ public class HomeAppListAdapter extends BaseListAdapter<HomeListData.DataBean.Da
     private int mHeight;
     private Context context;
     public static final int ONE_SCREEN_COUNT = HomeFragment.fullItemCount; //
-    // 一屏能显示的个数，这个根据屏幕高度和各自的需求定
-    public static final int ONE_REQUEST_COUNT = 10; // 一次请求的个数
 
     public HomeAppListAdapter(Context context) {
         super(context);
@@ -110,7 +108,7 @@ public class HomeAppListAdapter extends BaseListAdapter<HomeListData.DataBean.Da
 
         // 正常数据
         final ViewHolder holder;
-        if (convertView != null && convertView instanceof LinearLayout) {
+        if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
             convertView = mInflater.inflate(R.layout.item_loans_app_new, parent, false);

@@ -6,6 +6,7 @@ import com.jike.cashocean.model.HomeListData;
 import com.jike.cashocean.model.MessageBean;
 import com.jike.cashocean.ui.base.BaseContract;
 import com.jike.cashocean.ui.home.HomeFragment;
+import com.jike.cashocean.ui.home.HomeNewFragment;
 
 import java.util.Map;
 
@@ -29,6 +30,22 @@ public interface HomeContract {
     }
 
     interface Presenter extends BaseContract.BasePresenter<HomeFragment> {
+
+        void getBannerUrl(Map<String, String> map);
+
+        void getMessages();
+
+        void getHomeListData(String desckey, String page, String perpage);
+
+        void loadMore(String desckey, String page, String pageLenght);
+
+        void refresh(String desckey, String page, String pageLenght);
+
+        void clickItem(String id);
+
+        void order(String desckey, String page, String pageLenght);
+    }
+    interface Presentere extends BaseContract.BasePresenter<HomeNewFragment> {
 
         void getBannerUrl(Map<String, String> map);
 

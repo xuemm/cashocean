@@ -57,7 +57,6 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import static com.jike.cashocean.Content.KeyValue.HOME_CLICK_URL;
 import static com.jike.cashocean.Content.KeyValue.HOME_PACKAGE_NAME;
 
-//extends BaseFragment<LoansRepaymentPresenter> implements LoansRepaymentContract.View, IStateView
 public class HomeFragment extends BaseFragment<HomePresenter> implements SmoothListView.ISmoothListViewListener, HomeContract.View, IStateView {
     @BindView(R.id.listView)
     SmoothListView smoothListView;
